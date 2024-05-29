@@ -22,10 +22,10 @@ def load_file_list(path,extension):
 
 
 # Model Paths:
-fpn_model_path = os.getcwd() + "\\fpn_model\\fpn_20230303\\further\\"
-detection_model_path = os.getcwd() + "\\cell_detection\\Label_8x32x20_with_older_with_translations\\no_dense_layers_7x7_5x5_3x3_kernels\\run11_extra_smp_20240103\\"
-segmentation_model_path = os.getcwd() + "\\cell_segmentation\\cell_segmentation_20230109\\epoch_21_to_40\\"
-tracking_model_path = os.getcwd() + '\\cell_tracking\\mpnn_no_ta_64units_20230703\\'
+fpn_model_path = os.getcwd() + "\\fpn_model\\"
+detection_model_path = os.getcwd() + "\\cell_detection\\"
+segmentation_model_path = os.getcwd() + "\\cell_segmentation\\"
+tracking_model_path = os.getcwd() + '\\cell_tracking\\'
 
 # Cropping settings:
 rot_angle = 90
