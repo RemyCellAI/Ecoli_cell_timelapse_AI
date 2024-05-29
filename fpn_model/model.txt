@@ -1,0 +1,160 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Oct 15 16:22:41 2022
+
+@author: Orange
+"""
+
+
+
+# TF MODEL
+import tensorflow as tf
+
+
+
+def feature_proposal_model(input_shape):
+    """
+
+    Arguments:
+    input_shape -- shape of the images of the dataset
+    classes -- integer, number of classes
+
+    Returns:
+    model -- a Model() instance in Keras
+    """
+    dropout_rate = 0.1
+    
+    # Define the input as a tensor with shape input_shape
+    X_input = tf.keras.layers.Input(input_shape)
+
+
+
+
+    # 128x128
+    X = tf.keras.layers.Conv2D(128, (7, 7), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X_input)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(128, (7, 7), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    X = tf.keras.layers.MaxPooling2D((2, 2), strides=(2, 2))(X)
+    
+    # 64x64
+    X = tf.keras.layers.Conv2D(64, (3, 3), strides = (1, 1), padding="same", kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(64, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(128, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(128, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    X = tf.keras.layers.MaxPooling2D((2, 2), strides=(2, 2))(X)
+
+    # 32x32
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(256, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    
+    X = tf.keras.layers.Conv2D(128, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(128, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    
+    X = tf.keras.layers.Conv2D(64, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    X = tf.keras.layers.MaxPooling2D((2, 2), strides=(2, 2))(X)
+
+    # 16x16
+    X = tf.keras.layers.Conv2D(64, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    
+    X = tf.keras.layers.Conv2D(64, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(32, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+    
+    X = tf.keras.layers.Conv2D(16, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(5, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+    X = tf.keras.layers.Dropout(dropout_rate, noise_shape=None, seed=42)(X)
+
+    X = tf.keras.layers.Conv2D(5, (3, 3), strides = (1, 1), padding="same",  kernel_initializer = tf.keras.initializers.glorot_uniform(seed=0), use_bias=False)(X)
+    X = tf.keras.layers.BatchNormalization(axis = 3)(X)
+    X = tf.keras.layers.LeakyReLU()(X)
+
+    
+    # Create model
+    model = tf.keras.Model(inputs = X_input, outputs = X)
+
+    return model
+
+

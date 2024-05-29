@@ -1,0 +1,211 @@
+
+  # Initialize the model
+LEARNING_RATE = 1e-5
+
+mpnn = mpnn_in_def_d_own_neighbours_crop_feat_dcrop(
+    node_dim = 16*24,
+    edge_dim = 5,
+    message_steps=3,
+    hidden_units = 64
+)
+
+mpnn.summary()
+
+mpnn.compile(
+    loss=cust_loss,
+    optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),
+    metrics=[tp,rn],
+)
+
+
+
+
+
+
+
+
+
+
+
+Model: "mpnn"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ node_features (InputLayer)     [(None, 384)]        0           []                               
+                                                                                                  
+ reshape_1 (Reshape)            (None, 16, 24)       0           ['node_features[0][0]']          
+                                                                                                  
+ tf.expand_dims_1 (TFOpLambda)  (None, 16, 24, 1)    0           ['reshape_1[0][0]']              
+                                                                                                  
+ conv2d_4 (Conv2D)              (None, 16, 24, 128)  1280        ['tf.expand_dims_1[0][0]']       
+                                                                                                  
+ leaky_re_lu_7 (LeakyReLU)      (None, 16, 24, 128)  0           ['conv2d_4[0][0]']               
+                                                                                                  
+ conv2d_5 (Conv2D)              (None, 16, 24, 128)  147584      ['leaky_re_lu_7[0][0]']          
+                                                                                                  
+ leaky_re_lu_8 (LeakyReLU)      (None, 16, 24, 128)  0           ['conv2d_5[0][0]']               
+                                                                                                  
+ max_pooling2d_3 (MaxPooling2D)  (None, 8, 12, 128)  0           ['leaky_re_lu_8[0][0]']          
+                                                                                                  
+ conv2d_6 (Conv2D)              (None, 8, 12, 64)    73792       ['max_pooling2d_3[0][0]']        
+                                                                                                  
+ leaky_re_lu_9 (LeakyReLU)      (None, 8, 12, 64)    0           ['conv2d_6[0][0]']               
+                                                                                                  
+ max_pooling2d_4 (MaxPooling2D)  (None, 4, 6, 64)    0           ['leaky_re_lu_9[0][0]']          
+                                                                                                  
+ conv2d_7 (Conv2D)              (None, 4, 6, 32)     18464       ['max_pooling2d_4[0][0]']        
+                                                                                                  
+ leaky_re_lu_10 (LeakyReLU)     (None, 4, 6, 32)     0           ['conv2d_7[0][0]']               
+                                                                                                  
+ max_pooling2d_5 (MaxPooling2D)  (None, 2, 3, 32)    0           ['leaky_re_lu_10[0][0]']         
+                                                                                                  
+ flatten_1 (Flatten)            (None, 192)          0           ['max_pooling2d_5[0][0]']        
+                                                                                                  
+ dense_27 (Dense)               (None, 12)           2316        ['flatten_1[0][0]']              
+                                                                                                  
+ leaky_re_lu_11 (LeakyReLU)     (None, 12)           0           ['dense_27[0][0]']               
+                                                                                                  
+ edge_indices (InputLayer)      [(None, 2)]          0           []                               
+                                                                                                  
+ layer_normalization_25 (LayerN  (None, 12)          24          ['leaky_re_lu_11[0][0]']         
+ ormalization)                                                                                    
+                                                                                                  
+ tf.__operators__.getitem_18 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.__operators__.getitem_19 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.compat.v1.gather_10 (TFOpLa  (None, 12)          0           ['layer_normalization_25[0][0]', 
+ mbda)                                                            'tf.__operators__.getitem_18[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.compat.v1.gather_11 (TFOpLa  (None, 12)          0           ['layer_normalization_25[0][0]', 
+ mbda)                                                            'tf.__operators__.getitem_19[0][
+                                                                 0]']                             
+                                                                                                  
+ edge_features (InputLayer)     [(None, 5)]          0           []                               
+                                                                                                  
+ tf.math.subtract_1 (TFOpLambda  (None, 12)          0           ['tf.compat.v1.gather_10[0][0]', 
+ )                                                                'tf.compat.v1.gather_11[0][0]'] 
+                                                                                                  
+ tf.__operators__.getitem_20 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.__operators__.getitem_21 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.concat_9 (TFOpLambda)       (None, 17)           0           ['edge_features[0][0]',          
+                                                                  'tf.math.subtract_1[0][0]']     
+                                                                                                  
+ tf.compat.v1.gather_12 (TFOpLa  (None, 12)          0           ['layer_normalization_25[0][0]', 
+ mbda)                                                            'tf.__operators__.getitem_20[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.compat.v1.gather_13 (TFOpLa  (None, 12)          0           ['layer_normalization_25[0][0]', 
+ mbda)                                                            'tf.__operators__.getitem_21[0][
+                                                                 0]']                             
+                                                                                                  
+ dnn_block_4 (dnn_block)        (None, 15)           6573        ['tf.concat_9[0][0]']            
+                                                                                                  
+ tf.concat_10 (TFOpLambda)      (None, 39)           0           ['tf.compat.v1.gather_12[0][0]', 
+                                                                  'tf.compat.v1.gather_13[0][0]', 
+                                                                  'dnn_block_4[0][0]']            
+                                                                                                  
+ tf.compat.v1.shape_4 (TFOpLamb  (2,)                0           ['node_features[0][0]']          
+ da)                                                                                              
+                                                                                                  
+ dnn_block_5 (dnn_block)        (None, 15)           7981        ['tf.concat_10[0][0]',           
+                                                                  'tf.concat_12[0][0]',           
+                                                                  'tf.concat_14[0][0]']           
+                                                                                                  
+ tf.__operators__.getitem_22 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.__operators__.getitem_23 (S  ()                  0           ['tf.compat.v1.shape_4[0][0]']   
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.math.unsorted_segment_mean_  (None, 15)          0           ['dnn_block_5[0][0]',            
+ 4 (TFOpLambda)                                                   'tf.__operators__.getitem_22[0][
+                                                                 0]',                             
+                                                                  'tf.__operators__.getitem_23[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.concat_11 (TFOpLambda)      (None, 27)           0           ['layer_normalization_25[0][0]', 
+                                                                  'tf.math.unsorted_segment_mean_4
+                                                                 [0][0]']                         
+                                                                                                  
+ dnn_block_6 (dnn_block)        (None, 12)           7012        ['tf.concat_11[0][0]',           
+                                                                  'tf.concat_13[0][0]']           
+                                                                                                  
+ tf.__operators__.getitem_24 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.__operators__.getitem_25 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.compat.v1.gather_14 (TFOpLa  (None, 12)          0           ['dnn_block_6[0][0]',            
+ mbda)                                                            'tf.__operators__.getitem_24[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.compat.v1.gather_15 (TFOpLa  (None, 12)          0           ['dnn_block_6[0][0]',            
+ mbda)                                                            'tf.__operators__.getitem_25[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.concat_12 (TFOpLambda)      (None, 39)           0           ['tf.compat.v1.gather_14[0][0]', 
+                                                                  'tf.compat.v1.gather_15[0][0]', 
+                                                                  'dnn_block_5[0][0]']            
+                                                                                                  
+ tf.compat.v1.shape_5 (TFOpLamb  (2,)                0           ['node_features[0][0]']          
+ da)                                                                                              
+                                                                                                  
+ tf.__operators__.getitem_26 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.__operators__.getitem_27 (S  ()                  0           ['tf.compat.v1.shape_5[0][0]']   
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.math.unsorted_segment_mean_  (None, 15)          0           ['dnn_block_5[1][0]',            
+ 5 (TFOpLambda)                                                   'tf.__operators__.getitem_26[0][
+                                                                 0]',                             
+                                                                  'tf.__operators__.getitem_27[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.concat_13 (TFOpLambda)      (None, 27)           0           ['dnn_block_6[0][0]',            
+                                                                  'tf.math.unsorted_segment_mean_5
+                                                                 [0][0]']                         
+                                                                                                  
+ tf.__operators__.getitem_28 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.__operators__.getitem_29 (S  (None,)             0           ['edge_indices[0][0]']           
+ licingOpLambda)                                                                                  
+                                                                                                  
+ tf.compat.v1.gather_16 (TFOpLa  (None, 12)          0           ['dnn_block_6[1][0]',            
+ mbda)                                                            'tf.__operators__.getitem_28[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.compat.v1.gather_17 (TFOpLa  (None, 12)          0           ['dnn_block_6[1][0]',            
+ mbda)                                                            'tf.__operators__.getitem_29[0][
+                                                                 0]']                             
+                                                                                                  
+ tf.concat_14 (TFOpLambda)      (None, 39)           0           ['tf.compat.v1.gather_16[0][0]', 
+                                                                  'tf.compat.v1.gather_17[0][0]', 
+                                                                  'dnn_block_5[1][0]']            
+                                                                                                  
+ dnn_block_7 (dnn_block)        (None, 64)           9728        ['dnn_block_5[2][0]']            
+                                                                                                  
+ dense_28 (Dense)               (None, 64)           4160        ['dnn_block_7[0][0]']            
+                                                                                                  
+ leaky_re_lu_12 (LeakyReLU)     (None, 64)           0           ['dense_28[0][0]']               
+                                                                                                  
+ leaky_re_lu_13 (LeakyReLU)     (None, 64)           0           ['leaky_re_lu_12[0][0]']         
+                                                                                                  
+ dense_29 (Dense)               (None, 1)            65          ['leaky_re_lu_13[0][0]']         
+                                                                                                  
+==================================================================================================
+Total params: 278,979
+Trainable params: 278,979
+Non-trainable params: 0
+__________________________________________________________________________________________________
+
