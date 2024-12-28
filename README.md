@@ -1,7 +1,8 @@
 # Ecoli_cell_timelapse_AI
 This script detects, segments, and tracks E. coli cells in microfluidic channels. Python, Tensorflow
+The details of the deep learning models used in this program are described in  https://pubs.acs.org/doi/10.1021/acs.jpcb.4c02745
 
-The timelapse processing is called in the 'main' file, where you can define the folders containing the tiff stacks and (optionally) the csv files containing the detected fluorescent proteins in the cells. Note that you can comment out the definitions in the main definition you don't need. For example, if you don't have fluorescent proteins to be analyzed.
+In the 'main' file you can define the folders containing the tiff stacks and (optionally) the csv files containing the detected fluorescent proteins in the cells. Note that you can comment out the definitions in the main definition you don't need. For example, if you don't have fluorescent proteins to be analyzed.
 
 The main file:
 'time_lapse_processing_MAIN.py'
